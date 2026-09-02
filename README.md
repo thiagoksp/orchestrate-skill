@@ -2,11 +2,27 @@
 
 **English** | [Português (Brasil)](README.pt-BR.md)
 
-A personal Codex skill for coordinating specialized sub-agents while keeping scope,
+A personal adaptation of Rafael Quintanilha's Orchestrate skill for coordinating
+specialized Codex sub-agents while keeping scope,
 authorization, integration, and the final answer under the root agent's control.
 
 This public repository, `thiagoksp/orchestrate-skill`, is the canonical source for
 Thiago's version of the skill.
+
+## Original work and credits
+
+The original **Orchestrate** skill was created by
+[Rafael Quintanilha](https://github.com/rafaelquintanilha) and published in
+[rafaelquintanilha/skills](https://github.com/rafaelquintanilha/skills).
+
+- [Original skill](https://github.com/rafaelquintanilha/skills/tree/master/skills/orchestrate)
+- [Original SKILL.md at revision `8c4991b`](https://github.com/rafaelquintanilha/skills/blob/8c4991b3852de693b2af529723b960bf76700f5a/skills/orchestrate/SKILL.md)
+
+The initial `SKILL.md` imported here matches the upstream Git blob
+`ef41630867715f8e24890e0e5ed9a7b86ce65004`. This repository maintains a separate,
+modified copy; it does not claim authorship of the original skill or endorsement by
+its author. The adaptations are described below; credit for the original remains with
+Rafael Quintanilha.
 
 ## When to use it
 
@@ -62,5 +78,8 @@ reloaded.
 
 ## Governance
 
-This repository is Thiago's canonical version. Proposed changes are reviewed before they
-are merged. Other users may fork the public repository and adapt their own copy.
+This repository is Thiago's canonical adaptation. Proposed changes are reviewed before
+they are merged. Preserve upstream attribution in subsequent copies and adaptations.
+
+No explicit license was found in the upstream repository when checked on 2026-09-02.
+This attribution does not add a license or grant rights to the original work.
