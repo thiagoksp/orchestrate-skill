@@ -1,50 +1,55 @@
 # Orchestrate
 
-Skill pessoal do Codex para coordenar subagentes especializados sem transferir do agente
-principal a responsabilidade por escopo, autorizações, integração e resposta final.
+**English** | [Português (Brasil)](README.pt-BR.md)
 
-O repositório privado `thiagoksp/orchestrate-skill` é a fonte canônica desta cópia.
+A personal Codex skill for coordinating specialized sub-agents while keeping scope,
+authorization, integration, and the final answer under the root agent's control.
 
-## Quando usar
+This public repository, `thiagoksp/orchestrate-skill`, is the canonical source for
+Thiago's version of the skill.
 
-A skill é indicada quando há frentes realmente independentes, uma operação demorada que
-não deve bloquear a conversa, uma investigação paralela ou uma revisão independente que
-reduza risco. Tarefas pequenas ou estritamente sequenciais permanecem com o agente
-principal.
+## When to use it
 
-O roteamento padrão usa:
+Use Orchestrate when a task has genuinely independent workstreams, a long-running
+operation that should not block the conversation, a bounded parallel investigation, or
+an independent review that materially reduces risk. Small or tightly sequential tasks
+stay with the root agent.
 
-- Luna para folhas delimitadas, coleta de evidência e execução de workflows definidos;
-- Terra para uma frente colaborativa de implementação ou coordenação mais complexa;
-- Sol para julgamento sênior independente em decisões ambíguas ou de alto impacto.
+The default routing uses:
 
-Consulte [SKILL.md](SKILL.md) para as regras completas de seleção, divulgação,
-delegação, comitês, limites de autoridade e síntese.
+- Luna for bounded execution agents, evidence gathering, and established workflows. In
+  the skill, **leaf agent** means an agent that owns a bounded assignment and does not
+  delegate further; it does not mean a literal sheet or page;
+- Terra for a collaborative implementation or coordination workstream;
+- Sol for independent senior judgment on ambiguous or high-impact decisions.
 
-## Uso
+See [SKILL.md](SKILL.md) for the complete routing, disclosure, assignment, committee,
+authority, and synthesis rules.
 
-A skill pode ser descoberta automaticamente quando as regras globais ou do repositório
-mandarem avaliar `orchestrate`. Também pode ser invocada explicitamente como
-`$orchestrate`.
+## What this version adds
 
-Ela respeita o Coder persistente definido pelo projeto, padroniza o retorno dos
-especialistas, trata indisponibilidade de modelos sem tentativas repetitivas e transforma
-comitês obrigatórios em perguntas delimitadas.
+- structured specialist handoffs using `Verdict`, `Findings`, `Risks`,
+  `Recommendation`, and `Evidence`;
+- safe fallback when a model, tool, slot, or usage quota is unavailable;
+- respect for a persistent Coder or another explicitly assigned implementation owner;
+- repository committees converted into bounded decision questions;
+- no repeated spawning without a concrete change in availability.
 
-## Instalação privada
+The skill can be selected automatically by global or repository instructions, or invoked
+explicitly as `$orchestrate`.
 
-Pré-requisitos: Git, GitHub CLI (`gh`) e uma conta com acesso ao repositório privado.
-Autentique a conta, resolva o diretório global do Codex e clone a skill:
+## Install
+
+Prerequisites: Git, Codex, and a model/runtime that provides Codex collaboration tools.
 
 ```powershell
-gh auth login
 $orchestrateCodexRoot = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $env:USERPROFILE ".codex" }
 $orchestrateSkillsRoot = Join-Path $orchestrateCodexRoot "skills"
 New-Item -ItemType Directory -Force -Path $orchestrateSkillsRoot | Out-Null
-gh repo clone thiagoksp/orchestrate-skill (Join-Path $orchestrateSkillsRoot "orchestrate")
+git clone https://github.com/thiagoksp/orchestrate-skill.git (Join-Path $orchestrateSkillsRoot "orchestrate")
 ```
 
-Para atualizar uma instalação existente:
+To update an existing installation:
 
 ```powershell
 $orchestrateCodexRoot = if ($env:CODEX_HOME) { $env:CODEX_HOME } else { Join-Path $env:USERPROFILE ".codex" }
@@ -52,11 +57,10 @@ $orchestrateSkillPath = Join-Path $orchestrateCodexRoot "skills\orchestrate"
 git -C $orchestrateSkillPath pull --ff-only
 ```
 
-Abra uma nova tarefa do Codex depois de instalar ou atualizar para recarregar a skill e
-as regras globais.
+Start a new Codex task after installing or updating so the skill and global rules are
+reloaded.
 
-## Governança
+## Governance
 
-Alterações no conteúdo da skill exigem autorização explícita de Thiago. Propostas de
-melhoria devem ser apresentadas para revisão antes da edição. Projetos podem complementar
-o comportamento em seus próprios `AGENTS.md`, sem duplicar as regras globais.
+This repository is Thiago's canonical version. Proposed changes are reviewed before they
+are merged. Other users may fork the public repository and adapt their own copy.
