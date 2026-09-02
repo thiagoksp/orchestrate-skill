@@ -84,6 +84,19 @@ Challenge architecture, diagnosis, security, financial correctness, or release r
 - **Long-running creator workflow:** give Luna xhigh the established preflight, transfer, transcription, packaging, and monitoring sequence so the root remains available for corrections and approvals.
 - **Consulting or research:** use Luna xhigh for source collection, Luna max for evidence normalization, and Sol or the root for the recommendation and tradeoffs.
 
+## Honor Repository Committees
+
+When repository instructions require a committee, convert each required specialty into
+one bounded decision question against the same task packet. That question may name
+specific subchecks when the specialty is complex. Use separate agents only when their
+questions are genuinely independent; otherwise sequence the required reviews. If model,
+tool, usage, or slot limits prevent the full committee, disclose the limitation instead
+of inventing a completed review.
+
+Committee members do not expand the active issue, implementation authority, dependency
+set, publication gate, or merge authority. The root resolves disagreements and returns
+one decision memo rather than raw committee transcripts.
+
 ## Write the Assignment Contract
 
 Default to `fork_turns: "none"`. Pass only the context required to succeed:
@@ -97,7 +110,17 @@ Default to `fork_turns: "none"`. Pass only the context required to succeed:
 7. Whether the worker is a leaf or an explicitly authorized Sol/Terra coordinator. Luna is always a leaf.
 8. The exact requested model and reasoning effort that were disclosed to the user.
 
+Unless repository instructions require another shape, ask every specialist to return:
+`Verdict`, `Findings`, `Risks`, `Recommendation`, and `Evidence`.
+
 Use a history fork only when the subtask genuinely depends on conversation context too dense or fragile to restate. Never send two agents overlapping implementation ownership in the same checkout.
+
+Before spawning implementation work, check whether the user or repository has explicitly
+designated a persistent Coder or another app task/thread as the implementation owner for
+the current issue. When one exists, send a bounded handoff through the available
+thread-coordination mechanism instead of creating a competing implementation agent. If
+thread coordination is unavailable, return a copyable handoff to the user. Independent
+read-only review may still be delegated when it does not overlap ownership.
 
 ## Coordinate and Integrate
 
@@ -105,6 +128,12 @@ Use a history fork only when the subtask genuinely depends on conversation conte
 - Keep at least one useful path moving locally while agents work, unless the delegated operation is the whole task.
 - Treat every result as evidence. Reopen authoritative live surfaces before claiming merged, deployed, fixed, paid, published, or delivered status.
 - Follow up with an existing agent when the next task depends on its context; spawn a new one when independence is more valuable.
+- If a spawn fails because a model, tool, slot, or usage quota is unavailable, do not
+  repeatedly recreate the same assignment without a concrete state change. Disclose the
+  limitation, retain completed evidence, and continue with the smallest safe root-agent
+  workflow; ask the user only when delegation is essential to proceed. A concrete state
+  change means the runtime reports restored availability, a slot is freed, or the user
+  explicitly selects an available alternative after seeing the limitation.
 - Stop or redirect work when ownership overlaps, assumptions diverge, or a worker expands scope.
 - Synthesize disagreements explicitly. State which evidence wins and why.
 - Preserve user approval boundaries for destructive, production, financial, publishing, messaging, merge, and deployment actions.
