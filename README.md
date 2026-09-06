@@ -40,12 +40,15 @@ The default routing uses:
 - **Astra XHigh/Max** only when unresolved difficulty or explicit selection warrants it.
 
 Explicit user choices and available model/effort capabilities take precedence. The skill
-does not change the parent model or app settings. See [SKILL.md](SKILL.md) for routing and
-supervision, and [model evidence](references/model-evidence.md) for the dated DeepSWE and
-official GPT-6 references used to inform the policy.
+does not change the parent model or app settings. [SKILL.md](SKILL.md) is the compact
+entrypoint. Read [execution guidance](references/execution.md) when dispatching or
+supervising agents, and [model evidence](references/model-evidence.md) only when evaluating
+the routing policy against its dated DeepSWE and official GPT-6 sources.
 
 ## What this version adds
 
+- Progressive context: a short entrypoint and task-selected references, following the
+  principles in [Eric Provencher's Astra guidance](https://x.com/pvncher/status/2095991462416490862).
 - Dynamic scheduling: no fixed trio or total task ceiling; actual concurrent capacity
   controls how many independent units can run at once. Remaining work stays queued.
 - Progress supervision: distinguish a legitimate wait from repeated work without new
