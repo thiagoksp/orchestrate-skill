@@ -3,8 +3,8 @@
 **English** | [Português (Brasil)](README.pt-BR.md)
 
 A personal adaptation of Rafael Quintanilha's Orchestrate skill for coordinating
-specialized Codex sub-agents while keeping scope,
-authorization, integration, and the final answer under the root agent's control.
+specialized Codex sub-agents while keeping scope, authorization, integration, and the
+final answer under the root agent's control.
 
 This public repository, `thiagoksp/orchestrate-skill`, is the canonical source for
 Thiago's version of the skill.
@@ -26,30 +26,39 @@ Rafael Quintanilha.
 
 ## When to use it
 
-Use Orchestrate when a task has genuinely independent workstreams, a long-running
-operation that should not block the conversation, a bounded parallel investigation, or
-an independent review that materially reduces risk. Small or tightly sequential tasks
-stay with the root agent.
+Use Orchestrate when independent work can run in parallel, a long-running operation
+needs supervision, or independent review improves the result. The root adapts the team
+as the task develops and handles simple sequential work directly.
 
 The default routing uses:
 
-- Luna for bounded execution agents, evidence gathering, and established workflows. In
-  the skill, **leaf agent** means an agent that owns a bounded assignment and does not
-  delegate further; it does not mean a literal sheet or page;
-- Terra for a collaborative implementation or coordination workstream;
-- Sol for independent senior judgment on ambiguous or high-impact decisions.
+- **Luna Max** for bounded execution, coding, evidence, and focused review. A leaf agent
+  owns an assignment and does not delegate further;
+- **Sol High** for independent senior review and bounded diagnosis;
+- **Astra Medium** for new coordination assignments and work across components;
+- **Astra High** for difficult ambiguity, architecture, and consequential decisions;
+- **Astra XHigh/Max** only when unresolved difficulty or explicit selection warrants it.
 
-See [SKILL.md](SKILL.md) for the complete routing, disclosure, assignment, committee,
-authority, and synthesis rules.
+Explicit user choices and available model/effort capabilities take precedence. The skill
+does not change the parent model or app settings. See [SKILL.md](SKILL.md) for routing and
+supervision, and [model evidence](references/model-evidence.md) for the dated DeepSWE and
+official GPT-6 references used to inform the policy.
 
 ## What this version adds
 
-- structured specialist handoffs using `Verdict`, `Findings`, `Risks`,
-  `Recommendation`, and `Evidence`;
-- safe fallback when a model, tool, slot, or usage quota is unavailable;
-- respect for a persistent Coder or another explicitly assigned implementation owner;
-- repository committees converted into bounded decision questions;
-- no repeated spawning without a concrete change in availability.
+- Dynamic scheduling: no fixed trio or total task ceiling; actual concurrent capacity
+  controls how many independent units can run at once. Remaining work stays queued.
+- Progress supervision: distinguish a legitimate wait from repeated work without new
+  evidence; intervene, retain context, and carry retry counts across reassignment.
+- Evidence reuse: one owner for expensive shared checks, with additional verification
+  justified by changes or unresolved concerns.
+- Persistent Coder ownership and direct Senior coordination, without manual message relay.
+- Steering and context continuity, using notes or searchable history when available.
+- Compact specialist returns: `Verdict`, `Findings`, `Risks`, `Recommendation`, `Evidence`.
+
+Scenarios are adaptable examples, not mandatory teams. The root can assign Astra or Sol
+coordination within the authorized scope. A skill cannot increase runtime capacity or
+enable experimental features; those are separate configuration decisions.
 
 The skill can be selected automatically by global or repository instructions, or invoked
 explicitly as `$orchestrate`.

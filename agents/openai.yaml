@@ -1,4 +1,4 @@
 interface:
   display_name: "Orchestrate"
-  short_description: "Route substantial work across specialized sub-agents"
-  default_prompt: "Use $orchestrate to evaluate whether this task should be split among Sol, Terra, or Luna sub-agents, and coordinate only the useful independent work."
+  short_description: "Route and supervise agents by task difficulty"
+  default_prompt: "Use $orchestrate to route work across Luna Max, Sol High, and Astra by difficulty, adapt the team to available capacity, and supervise progress through completion."

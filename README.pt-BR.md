@@ -3,8 +3,8 @@
 [English](README.md) | **Português (Brasil)**
 
 Adaptação pessoal da skill Orchestrate, de Rafael Quintanilha, para coordenar subagentes
-especializados do Codex sem transferir do agente
-principal a responsabilidade por escopo, autorizações, integração e resposta final.
+especializados do Codex mantendo no agente principal a responsabilidade por escopo,
+autorizações, integração e resposta final.
 
 Este repositório público, `thiagoksp/orchestrate-skill`, é a fonte canônica da versão do
 Thiago.
@@ -26,31 +26,42 @@ Rafael Quintanilha.
 
 ## Quando usar
 
-Use Orchestrate quando houver frentes realmente independentes, uma operação demorada que
-não deve bloquear a conversa, uma investigação paralela delimitada ou uma revisão
-independente que reduza materialmente o risco. Tarefas pequenas ou estritamente
-sequenciais permanecem com o agente principal.
+Use Orchestrate quando frentes independentes puderem avançar em paralelo, uma operação
+demorada precisar de acompanhamento ou uma revisão independente melhorar o resultado.
+O agente principal adapta a equipe conforme a tarefa evolui e resolve diretamente o
+trabalho simples e sequencial.
 
 O roteamento padrão usa:
 
-- Luna para subagentes executores delimitados, coleta de evidências e workflows já
-  definidos. Na skill, **leaf agent** significa um agente que recebe uma tarefa limitada
-  e não delega novamente; é um termo técnico, não uma tradução literal;
-- Terra para uma frente colaborativa de implementação ou coordenação;
-- Sol para julgamento sênior independente em decisões ambíguas ou de alto impacto.
+- **Luna Max** para execução delimitada, programação, evidências e revisão focada.
+  Um **leaf agent** recebe uma tarefa delimitada e não delega novamente;
+- **Sol High** para revisão sênior independente e diagnóstico delimitado;
+- **Astra Medium** para novas atribuições de coordenação e trabalho entre componentes;
+- **Astra High** para ambiguidades difíceis, arquitetura e decisões de maior consequência;
+- **Astra XHigh/Max** quando a dificuldade ainda não resolvida ou uma escolha explícita
+  justificar o esforço.
 
-Consulte [SKILL.md](SKILL.md) para as regras completas de roteamento, divulgação,
-atribuição, comitês, limites de autoridade e síntese.
+Escolhas explícitas do usuário e capacidades disponíveis de modelo/esforço prevalecem.
+A skill não altera o modelo principal nem as configurações do aplicativo. Consulte
+[SKILL.md](SKILL.md) para roteamento e supervisão, e a [referência de modelos](references/model-evidence.md)
+para os dados datados do DeepSWE e a documentação oficial do GPT-6 usados na política.
 
 ## O que esta versão acrescenta
 
-- retornos estruturados com `Verdict`, `Findings`, `Risks`, `Recommendation` e
-  `Evidence`;
-- fallback seguro quando modelo, ferramenta, vaga ou cota de uso estiver indisponível;
-- respeito ao Coder persistente ou a outro responsável de implementação explicitamente
-  definido;
-- transformação de comitês obrigatórios em perguntas decisórias delimitadas;
-- nenhuma repetição de subagentes sem mudança concreta de disponibilidade.
+- Distribuição dinâmica: sem trio fixo nem teto total de tarefas; a capacidade real limita
+  quantas unidades independentes executam ao mesmo tempo. As demais ficam na fila.
+- Supervisão: diferenciar espera legítima de repetição sem evidência nova, intervir,
+  preservar contexto e manter a contagem de tentativas ao trocar o responsável.
+- Reuso de evidências: um responsável pelos testes caros compartilhados; verificações
+  adicionais precisam de uma mudança ou dúvida ainda não resolvida.
+- Coder persistente e coordenação direta pelo Senior, sem repasse manual de mensagens.
+- Continuidade após novas orientações, com notas ou histórico pesquisável quando disponíveis.
+- Retornos compactos: `Verdict`, `Findings`, `Risks`, `Recommendation` e `Evidence`.
+
+Os cenários são exemplos adaptáveis, não equipes obrigatórias. O agente principal pode
+atribuir coordenação a Astra ou Sol dentro do escopo autorizado. A skill não aumenta a
+capacidade do ambiente nem ativa recursos experimentais; isso exige uma decisão separada
+sobre configuração.
 
 A skill pode ser selecionada automaticamente pelas regras globais ou do repositório e
 também pode ser invocada explicitamente como `$orchestrate`.

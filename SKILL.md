@@ -1,141 +1,154 @@
 ---
 name: orchestrate
-description: Coordinate Codex sub-agents for substantial multi-step work. Requires Codex collaboration tools and the listed Luna, Terra, and Sol model families. Use proactively when a request involves two or more separable workstreams; repository exploration plus implementation or verification; production diagnosis across logs, code, and live systems; PR or release review; multi-source analytics or research; or long-running tests, transfers, workflows, and monitors that should not block user communication. Assign bounded leaf work to Luna and collaborative or high-stakes work to Terra or Sol. Skip only trivial single-step or tightly sequential tasks.
+description: Coordinate independent work and substantial reviews through Codex agents. Route by difficulty, schedule within available capacity, monitor progress, and integrate evidence while respecting the existing implementation owner and user authorizations.
 ---
 
 # Orchestrate
 
-Keep the root agent responsible for decomposition, user communication, approvals, synthesis, and the final claim. Delegate outcomes, not vague help.
+The root owns decomposition, user communication, decisions, and integration. Follow the
+user's intent and applicable AGENTS.md; this skill does not grant new scope or authority.
+Where a workflow requires a verified execution contract or enforced read-only access,
+validate those prerequisites before dispatch and follow-up. A read-only prompt is not
+proof of isolation. If the executor cannot demonstrate the required boundary, keep that
+dispatch pending and continue only independent work permitted to the root.
 
-## Decide Whether to Delegate
+## Select by difficulty
 
-Delegate only when at least one condition holds:
+Delegate when parallel work saves time or independent judgment improves the result.
+Assess ambiguity, component coupling, testability, task duration, and consequences of
+error. A short patch can require senior judgment; a large, well-specified edit can be
+bounded execution. Handle simple sequential work directly without manufacturing subtasks.
 
-- Two or more workstreams can proceed independently.
-- A slow command, transfer, test suite, monitor, or data pull would otherwise make the root unavailable.
-- A bounded investigation can gather evidence while the root handles the main path.
-- An independent review would materially reduce implementation, production, security, payment, or release risk.
+| Model | Effort | Preferred assignment |
+|---|---|---|
+| `gpt-5.6-luna` | `max` always | Bounded execution, substantial but well-specified coding, evidence gathering, focused review, or established workflows. Leaf: does not delegate. |
+| `gpt-5.6-sol` | `high` | Independent senior review, bounded diagnosis, or a second opinion on a difficult decision. |
+| `gpt-6-astra` | `medium` | Default choice for new coordination assignments and implementation connecting multiple components. |
+| `gpt-6-astra` | `high` | Ambiguous requirements, difficult architecture, consequential decisions, or diagnosis needing deeper investigation. |
+| `gpt-6-astra` | `xhigh` or `max` | Exceptional work justified by unresolved difficulty or explicit user selection; not automatic escalation. |
 
-Stay single-agent when the task is small, the next step depends on the immediately previous result, multiple agents would touch the same mutable files, or delegation overhead is comparable to doing the work directly.
+Preserve explicit user model choices and the configured parent; routing is not permission
+to change app settings or silently replace a persistent Coder. Luna is never silently
+downgraded from max. Other model routes require an explicit user choice.
 
-## Select the Model
+Check the available tool's model, effort, permission, and capacity metadata before
+dispatch. Reuse that information until it changes; do not probe unavailable models with
+repeated spawns. A model available in the app is not necessarily available through every
+delegation tool. When a preferred route is unavailable, disclose it and use a supported
+route from this table when appropriate; otherwise retain the work at the root within its
+role or report the specific blocker. Do not create unrelated tasks to bypass limits.
 
-Choose by ambiguity, coupling, and consequence rather than task size alone.
+Use observed outcomes, cost, latency, and rework to refine routing. There is no fixed
+percentage of work assigned to each model. For a model-selection decision, consult
+[model evidence](references/model-evidence.md) only when useful. Its dated DeepSWE
+results are supporting evidence, not success probabilities for the user's task.
 
-| Model | Use when | Typical effort | Do not use for |
-|---|---|---|---|
-| Luna | The assignment can be completed as a bounded leaf. Examples: evidence gathering, CI inspection, repository or documentation research, workflow execution, scoped implementation, review, browser verification, or multi-source reconciliation. | `xhigh` by default; `max` when quality matters more than latency or a weak result would cause rework. | Final high-stakes judgment or coordination of other agents. |
-| Terra | The assignment benefits from a stronger collaborative peer, a higher coding ceiling than Luna, or delegated coordination of its own independent workstream. | `max` by default. | Routine leaf work that Luna xhigh or max can complete. |
-| Sol | The assignment needs independent senior judgment under ambiguity or high consequence. Examples: architecture, competing incident hypotheses, security or payment correctness, release-risk analysis, or an adversarial audit of a proposed plan. | `high` by default; `max` for the hardest quality-first work. | Routine scouting, deterministic workflows, or ordinary isolated coding. |
+## Divide and schedule dynamically
 
-Default to Luna xhigh for leaf work. Escalate to Luna max for difficult leaves. Use Luna high, medium, or low only as an explicit latency optimization for completely mechanical work whose result is deterministic and cheaply verified. Move to Terra max when peer coordination, its higher ceiling, or lower wall-clock time than a long Luna max run justifies the additional cost. Move to Sol high or max when the assignment must resolve the central ambiguity or make a high-consequence judgment.
+Before implementation, check for a designated persistent Coder in the same project.
+Verify its destination and send the authorized packet there rather than create a
+competing implementer. Independent reviewers may work alongside it. If delivery fails,
+retain the packet using the project's local handoff convention, inspect the failure,
+and pursue available in-scope recovery; never make the user relay technical messages.
 
-Use Luna only as a leaf and explicitly tell it not to delegate. Sol and Terra can act as collaborative peers and may delegate further only when the root explicitly assigns coordination ownership, the child work is independently scoped, and slots remain available. Otherwise make them leaves too.
+Each work unit needs an outcome, acceptance evidence, relevant sources/revision,
+dependencies, owner and writable surfaces, current authority, requested model/effort,
+and a useful next checkpoint. Assign one owner to each mutable surface. Prefer
+`fork_turns: "none"` and a bounded packet; inherit history only when it materially helps.
 
-## Disclose Every Spawn
+Maintain a compact queue of ready, running, waiting, and completed units. Concurrency is
+not a total task limit: no fixed trio, headcount target, or total-agent ceiling is imposed
+by this skill. Respect actual runtime limits and their counting convention. Dispatch
+ready independent units as capacity permits, reusing agents for dependent follow-ups.
+After each result or material discovery, reassess the queue and launch the next useful
+units. If nothing is ready but necessary work is still running, wait and supervise.
+Do not end the task merely because the first group finished.
 
-Immediately before every `spawn_agent` call, send a concise commentary update that tells the user:
+An Astra or Sol workstream owner may coordinate children when the root explicitly assigns
+that responsibility. The root may revise that assignment as the task develops; this is
+an internal scheduling choice within existing authority, not another user approval gate.
+Nested delegation shares the same scope, ownership rules, and runtime limits. Keep Luna
+as a leaf. Reuse or close completed agents when supported; preserve persistent Coders.
 
-- The agent task name.
-- The exact requested model slug, such as `gpt-5.6-luna`.
-- The exact requested reasoning effort, such as `high` or `max`.
-- The assigned role and whether the agent is a leaf or an authorized coordinator.
+Before a spawn, briefly disclose task name, exact requested model and effort, and
+leaf/coordinator role. Group simultaneous disclosures. Report runtime substitutions when
+observable; a requested configuration is not proof of actual runtime identity.
 
-Group simultaneous spawns into one compact update when useful. For example:
+### Adapt these scenarios
 
-```text
-Spawning:
-- `evidence_scout` — `gpt-5.6-luna`, reasoning `xhigh` — read-only leaf
-- `senior_critic` — `gpt-5.6-sol`, reasoning `max` — senior-review leaf
-```
+These are starting points, not fixed teams or mandatory stages:
 
-Describe these as requested configuration, not verified runtime identity. If the runtime later reports a different actual model or reasoning effort, disclose the correction. Prefer `fork_turns: "none"` with explicit `model` and `reasoning_effort` values so the configuration is visible. When a history fork requires inherited values, say they are inherited and name the parent's exact model and reasoning effort when known; if the runtime does not expose them, state that explicitly and never guess.
+- **Small correction:** existing Coder or one bounded executor, with focused verification.
+- **PR or release:** distribute independent risk questions; assign one owner to shared
+  test/CI evidence and keep integration with the root.
+- **Cross-component change:** use an Astra coordinator with independent implementation
+  owners or reviewers wherever ownership and dependencies permit.
+- **Investigation:** divide by competing hypotheses, evidence sources, or components;
+  expand or combine units as evidence changes.
+- **Long-running operation:** retain its operation handle, continue useful independent
+  work, and wait when a dependency requires the result. Do not launch duplicate jobs.
 
-## Use These Reusable Personas
+When a repository requires a committee, cover each required specialty with a bounded
+question. Parallelize independent questions and sequence dependent ones. Report any
+missing required review; neither a template nor available slots determine committee size.
 
-Treat these as assignment shapes, not permanent project agents.
+## Supervise execution
 
-### Evidence scout — Luna xhigh
+Keep a compact progress record per unit: last concrete evidence, pending operation
+handle, blocker/question, next checkpoint, and attempts already made. Use task-wait tools
+with cursors or agent waits; inspect details at milestones or when progress is uncertain.
+Keep individual waits bounded so user updates remain timely. Do useful independent root
+work when available, without editing worker-owned files or inventing filler work.
 
-Gather a defined evidence set and return paths, commands, timestamps, exact failures, and confidence. Keep it read-only. Good for service health, Sentry or log excerpts, GitHub checks, current diffs, official documentation, and locating relevant code.
+Distinguish legitimate waiting from repetition. An active test, transfer, or service
+wait may take time without new output. Elapsed time or an unchanged status alone is not
+a loop. Investigate when an expected checkpoint is missed or when the agent repeats the
+same plan, reads, command, or error without a new hypothesis or useful evidence.
 
-### Workflow operator — Luna xhigh
+Intervene with a focused question or correction. If an agent returns preparation instead
+of the requested result, check its active task, mode, packet, and scope first. On a mismatch,
+suspend dispatch, confirm the worker stopped, and preserve/compare the checkpoint before
+recovery. An empty response or a sent stop message is not proof of containment. When the
+contract matches but the result is incomplete, identify the unmet outcome and redirect it.
+If repetition persists, interrupt the affected unit, retain evidence, and narrow or
+reassign the work within existing authority. Do not spawn replicas of the same stalled work.
+Observe the applicable retry limit; by default, at most three attempts of the same
+failing action/cause across all agents. Each retry needs a changed hypothesis, input,
+or environment. Reassignment does not reset the count. Stop that action at the limit
+and route the evidence to the root; bring genuine user decisions or unresolved authority
+needs to the user.
 
-Run and monitor an already-defined, user-authorized workflow with explicit inputs and completion checks. Good for long transfers, transcription and packaging, CI watching, deterministic exports, or repeatable validation. Do not invent scope or make approval decisions.
+Workers send unresolved questions, failures, scope conflicts, and approval needs to the
+root with evidence, prior attempts, and a recommended next step. They may continue
+independent authorized work while the affected action waits. The root resolves technical
+choices in scope and continues review/correction directly with the worker.
 
-### Implementation or review leaf — Luna max
+Treat new user messages as steering by default: answer side questions and preserve the
+original objective, completed work, and constraints. Replace the objective only when
+the user cancels it or requests incompatible work. For missing optional preferences,
+use an asynchronous question when available and continue independent work; elapsed time
+does not supply required approval.
 
-Own one bounded code surface or review target, complete the requested work, run targeted checks, and report changed files, evidence, and residual risk. Give distinct file or component ownership.
+When notes or searchable prior context are available, recover earlier decisions, failed
+attempts, and evidence before redoing work. Otherwise retain a compact handoff at context
+boundaries. This skill does not enable experimental context features, async APIs, or
+dynamic effort changes that the current tool does not support.
 
-### Collaborative workstream owner — Terra max
+## Verify and integrate
 
-Own a substantial independent workstream that benefits from a stronger coding peer or further decomposition. Coordinate children only when explicitly authorized; otherwise remain a leaf. Return one integrated result for the assigned workstream.
+Assign one owner to expensive shared checks. Record command, revision/inputs, result,
+and relevant environment so reviewers can reuse fresh evidence. Repeat or broaden checks
+only after relevant changes, a failure, or a named unresolved concern. Independent review
+should challenge the result, not automatically rerun the whole suite. Do not add tests
+that merely mirror wording or reversible low-impact edits.
 
-### Senior critic — Sol high or max
+Require compact `Verdict`, `Findings`, `Risks`, `Recommendation`, and `Evidence` returns.
+Check the actual artifact and acceptance criteria; a worker's completion message is not
+acceptance. Resolve disagreements against primary evidence, send bounded authorized
+corrections, and re-review affected work. Recheck live external state before claiming
+publication, merge, deployment, or another externally completed action.
 
-Challenge architecture, diagnosis, security, financial correctness, or release readiness. Ask for the strongest competing explanation and the evidence that would distinguish it. Return a recommendation; keep the final decision with the root and user.
-
-## Apply Common Delegation Patterns
-
-- **Production incident:** send Luna xhigh for live health/logs and Luna max for the relevant code path; use Terra max only if the investigation becomes a substantial coordinated workstream. Have the root separate underlying cause from resilience mitigation.
-- **PR or release:** send Luna xhigh for exact-head diff/check/CI evidence and Luna max for substantive review; keep approval, merge, deploy, and final live verification with the root unless the user explicitly delegates those actions.
-- **Analytics or payments:** use separate Luna xhigh scouts for independent sources when useful, then Luna max to reconcile definitions and mismatches; use Sol high or max for money-sensitive ambiguity.
-- **UI work:** give Luna xhigh ordinary bounded implementation and Luna max difficult implementation or adaptive browser verification; use Terra max for a larger independent workstream that needs further decomposition.
-- **Long-running creator workflow:** give Luna xhigh the established preflight, transfer, transcription, packaging, and monitoring sequence so the root remains available for corrections and approvals.
-- **Consulting or research:** use Luna xhigh for source collection, Luna max for evidence normalization, and Sol or the root for the recommendation and tradeoffs.
-
-## Honor Repository Committees
-
-When repository instructions require a committee, convert each required specialty into
-one bounded decision question against the same task packet. That question may name
-specific subchecks when the specialty is complex. Use separate agents only when their
-questions are genuinely independent; otherwise sequence the required reviews. If model,
-tool, usage, or slot limits prevent the full committee, disclose the limitation instead
-of inventing a completed review.
-
-Committee members do not expand the active issue, implementation authority, dependency
-set, publication gate, or merge authority. The root resolves disagreements and returns
-one decision memo rather than raw committee transcripts.
-
-## Write the Assignment Contract
-
-Default to `fork_turns: "none"`. Pass only the context required to succeed:
-
-1. One concrete objective and why it matters.
-2. Exact scope: repository, paths, systems, date range, or source set.
-3. Ownership boundary, including files or surfaces the worker may change.
-4. Constraints from the user, repository, and applicable skills.
-5. Required validation and the expected return format.
-6. Whether the task is read-only or authorized to mutate state.
-7. Whether the worker is a leaf or an explicitly authorized Sol/Terra coordinator. Luna is always a leaf.
-8. The exact requested model and reasoning effort that were disclosed to the user.
-
-Unless repository instructions require another shape, ask every specialist to return:
-`Verdict`, `Findings`, `Risks`, `Recommendation`, and `Evidence`.
-
-Use a history fork only when the subtask genuinely depends on conversation context too dense or fragile to restate. Never send two agents overlapping implementation ownership in the same checkout.
-
-Before spawning implementation work, check whether the user or repository has explicitly
-designated a persistent Coder or another app task/thread as the implementation owner for
-the current issue. When one exists, send a bounded handoff through the available
-thread-coordination mechanism instead of creating a competing implementation agent. If
-thread coordination is unavailable, return a copyable handoff to the user. Independent
-read-only review may still be delegated when it does not overlap ownership.
-
-## Coordinate and Integrate
-
-- Respect the current slot limit and use only the agents that have independent work. One precise worker is better than forced fan-out.
-- Keep at least one useful path moving locally while agents work, unless the delegated operation is the whole task.
-- Treat every result as evidence. Reopen authoritative live surfaces before claiming merged, deployed, fixed, paid, published, or delivered status.
-- Follow up with an existing agent when the next task depends on its context; spawn a new one when independence is more valuable.
-- If a spawn fails because a model, tool, slot, or usage quota is unavailable, do not
-  repeatedly recreate the same assignment without a concrete state change. Disclose the
-  limitation, retain completed evidence, and continue with the smallest safe root-agent
-  workflow; ask the user only when delegation is essential to proceed. A concrete state
-  change means the runtime reports restored availability, a slot is freed, or the user
-  explicitly selects an available alternative after seeing the limitation.
-- Stop or redirect work when ownership overlaps, assumptions diverge, or a worker expands scope.
-- Synthesize disagreements explicitly. State which evidence wins and why.
-- Preserve user approval boundaries for destructive, production, financial, publishing, messaging, merge, and deployment actions.
-
-Return one integrated answer. Do not dump parallel reports on the user.
+Finish when the authorized outcome and required verification are complete, or at a real
+user decision, authority gate, or unresolved blocker. Do not end solely because an agent
+is still working or a follow-up is needed. Return one integrated result with material
+limitations; do not dump worker transcripts or repeat unchanged status messages.
