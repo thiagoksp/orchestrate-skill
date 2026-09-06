@@ -42,12 +42,15 @@ O roteamento padrão usa:
   justificar o esforço.
 
 Escolhas explícitas do usuário e capacidades disponíveis de modelo/esforço prevalecem.
-A skill não altera o modelo principal nem as configurações do aplicativo. Consulte
-[SKILL.md](SKILL.md) para roteamento e supervisão, e a [referência de modelos](references/model-evidence.md)
-para os dados datados do DeepSWE e a documentação oficial do GPT-6 usados na política.
+A skill não altera o modelo principal nem as configurações do aplicativo. [SKILL.md](SKILL.md)
+é a entrada compacta. Leia o [guia de execução](references/execution.md) ao delegar ou
+supervisionar agentes, e a [referência de modelos](references/model-evidence.md) apenas ao
+avaliar a política contra os dados datados do DeepSWE e a documentação oficial do GPT-6.
 
 ## O que esta versão acrescenta
 
+- Contexto progressivo: entrada curta e referências escolhidas por tarefa, seguindo os
+  princípios da [orientação de Eric Provencher sobre Astra](https://x.com/pvncher/status/2095991462416490862).
 - Distribuição dinâmica: sem trio fixo nem teto total de tarefas; a capacidade real limita
   quantas unidades independentes executam ao mesmo tempo. As demais ficam na fila.
 - Supervisão: diferenciar espera legítima de repetição sem evidência nova, intervir,
