@@ -1,4 +1,4 @@
 interface:
   display_name: "Orchestrate"
   short_description: "Route and supervise agents by task difficulty"
-  default_prompt: "Use $orchestrate to route work across Luna Max, Sol High, and Astra by difficulty, adapt the team to available capacity, and supervise progress through completion."
+  default_prompt: "Use $orchestrate to choose the least expensive adequate route (Luna Max or Astra Low/Medium), preserve Senior/Coder context, and verify completion."

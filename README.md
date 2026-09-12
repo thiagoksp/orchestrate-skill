@@ -34,13 +34,18 @@ The default routing uses:
 
 - **Luna Max** for bounded execution, coding, evidence, and focused review. A leaf agent
   owns an assignment and does not delegate further;
-- **Sol High** for independent senior review and bounded diagnosis;
-- **Astra Medium** for new coordination assignments and work across components;
-- **Astra High** for difficult ambiguity, architecture, and consequential decisions;
-- **Astra XHigh/Max** only when unresolved difficulty or explicit selection warrants it.
+- **Astra Low** for diagnosis, synthesis, independent review, and coordination needing
+  more judgment than a bounded Luna assignment;
+- **Astra Medium** for difficult ambiguity, architecture, consequential risk, and strongly
+  coupled work across components.
 
-Explicit user choices and available model/effort capabilities take precedence. The skill
-does not change the parent model or app settings. [SKILL.md](SKILL.md) is the compact
+Sol, Terra, and Astra High/XHigh/Max are not automatic routes. Select the least expensive
+adequate option and pass both model and effort explicitly; explicit user choices prevail.
+
+Explicit user choices take precedence; availability constrains selection within the
+approved routes and does not authorize other automatic models. The skill
+does not change the parent model, existing Senior/Coder chats, context windows, compaction,
+or app settings. [SKILL.md](SKILL.md) is the compact
 entrypoint. Read [execution guidance](references/execution.md) when dispatching or
 supervising agents, and [model evidence](references/model-evidence.md) only when evaluating
 the routing policy against its dated DeepSWE and official GPT-6 sources.
@@ -59,7 +64,7 @@ the routing policy against its dated DeepSWE and official GPT-6 sources.
 - Steering and context continuity, using notes or searchable history when available.
 - Compact specialist returns: `Verdict`, `Findings`, `Risks`, `Recommendation`, `Evidence`.
 
-Scenarios are adaptable examples, not mandatory teams. The root can assign Astra or Sol
+Scenarios are adaptable examples, not mandatory teams. The root can assign Astra Low/Medium
 coordination within the authorized scope. A skill cannot increase runtime capacity or
 enable experimental features; those are separate configuration decisions.
 
@@ -85,8 +90,22 @@ $orchestrateSkillPath = Join-Path $orchestrateCodexRoot "skills\orchestrate"
 git -C $orchestrateSkillPath pull --ff-only
 ```
 
-Start a new Codex task after installing or updating so the skill and global rules are
-reloaded.
+New tasks can load the updated skill. Keep existing Senior/Coder tasks and their context;
+refresh the relevant instructions in place when needed instead of restarting their chats.
+
+For an explicitly authorized configuration update, Codex supports separate defaults for
+new subagents in config.toml without changing the primary model or context settings:
+
+```toml
+[agents]
+default_subagent_model = "gpt-5.6-luna"
+default_subagent_reasoning_effort = "max"
+```
+
+Explicit spawn values and custom agent files can override these defaults. See the
+[official precedence rules](https://learn.chatgpt.com/docs/agent-configuration/subagents).
+Do not copy a whole parent conversation into temporary specialists by default, or treat
+this optional snippet as authorization to overwrite existing configuration.
 
 ## Governance
 

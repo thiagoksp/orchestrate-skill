@@ -21,14 +21,17 @@ worker or dispatch the next ready unit. Close completed agents only when the too
 it; preserve persistent Coders. If dependencies are still running, supervise and wait.
 Reassess after results or discoveries rather than ending after the first group.
 
-Astra/Sol may coordinate children when the root assigns that responsibility; the root can
+Astra Low/Medium may coordinate children when the root assigns that responsibility; the root can
 revise the assignment as the task develops. This internal scheduling decision needs no
 new user approval when scope and authority stay unchanged. Nested work shares the same
 ownership and capacity limits. Luna does not delegate.
 
 Before spawning, briefly disclose the requested model/effort, task name, and role.
 Group simultaneous disclosures. Do not present requested settings as verified runtime
-identity. Prefer `fork_turns: "none"` unless inherited history materially helps.
+identity. Supply both model and effort to avoid accidental parent/default inheritance.
+Prefer `fork_turns: "none"` for temporary specialists unless inherited history materially
+helps. Keep existing Senior/Coder chats and their history, context windows and compaction
+settings intact; do not recreate or compact them to meet a helper's cost target.
 
 Scenarios are examples, not fixed teams:
 
