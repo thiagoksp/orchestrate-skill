@@ -35,14 +35,18 @@ O roteamento padrão usa:
 
 - **Luna Max** para execução delimitada, programação, evidências e revisão focada.
   Um **leaf agent** recebe uma tarefa delimitada e não delega novamente;
-- **Sol High** para revisão sênior independente e diagnóstico delimitado;
-- **Astra Medium** para novas atribuições de coordenação e trabalho entre componentes;
-- **Astra High** para ambiguidades difíceis, arquitetura e decisões de maior consequência;
-- **Astra XHigh/Max** quando a dificuldade ainda não resolvida ou uma escolha explícita
-  justificar o esforço.
+- **Astra Low** para diagnóstico, síntese, revisão independente e coordenação que exijam
+  mais julgamento do que uma atribuição delimitada ao Luna;
+- **Astra Medium** para ambiguidades difíceis, arquitetura, riscos relevantes e trabalho
+  fortemente conectado entre componentes.
 
-Escolhas explícitas do usuário e capacidades disponíveis de modelo/esforço prevalecem.
-A skill não altera o modelo principal nem as configurações do aplicativo. [SKILL.md](SKILL.md)
+Sol, Terra e Astra High/XHigh/Max não são rotas automáticas. Escolha a opção adequada
+mais econômica e informe modelo e esforço explicitamente; escolhas do usuário prevalecem.
+
+Escolhas explícitas do usuário prevalecem; a disponibilidade limita as rotas aprovadas,
+sem autorizar outros modelos automaticamente.
+A skill não altera o modelo principal, chats Senior/Coder existentes, janelas de contexto,
+compactação ou configurações do aplicativo. [SKILL.md](SKILL.md)
 é a entrada compacta. Leia o [guia de execução](references/execution.md) ao delegar ou
 supervisionar agentes, e a [referência de modelos](references/model-evidence.md) apenas ao
 avaliar a política contra os dados datados do DeepSWE e a documentação oficial do GPT-6.
@@ -62,7 +66,7 @@ avaliar a política contra os dados datados do DeepSWE e a documentação oficia
 - Retornos compactos: `Verdict`, `Findings`, `Risks`, `Recommendation` e `Evidence`.
 
 Os cenários são exemplos adaptáveis, não equipes obrigatórias. O agente principal pode
-atribuir coordenação a Astra ou Sol dentro do escopo autorizado. A skill não aumenta a
+atribuir coordenação a Astra Low/Medium dentro do escopo autorizado. A skill não aumenta a
 capacidade do ambiente nem ativa recursos experimentais; isso exige uma decisão separada
 sobre configuração.
 
@@ -88,8 +92,23 @@ $orchestrateSkillPath = Join-Path $orchestrateCodexRoot "skills\orchestrate"
 git -C $orchestrateSkillPath pull --ff-only
 ```
 
-Abra uma nova tarefa do Codex depois de instalar ou atualizar para recarregar a skill e
-as regras globais.
+Novas tarefas podem carregar a skill atualizada. Preserve os chats Senior/Coder e seu
+contexto; atualize a leitura das instruções relevantes no próprio chat quando necessário,
+sem reiniciá-los.
+
+Em uma alteração de configuração explicitamente autorizada, o Codex permite definir
+padrões para novos subagentes no config.toml sem mudar o modelo principal ou o contexto:
+
+```toml
+[agents]
+default_subagent_model = "gpt-5.6-luna"
+default_subagent_reasoning_effort = "max"
+```
+
+Valores explícitos no despacho e arquivos de agentes personalizados podem sobrescrever
+esses padrões. Consulte a [precedência oficial](https://learn.chatgpt.com/docs/agent-configuration/subagents).
+Não copie todo o histórico do principal para especialistas temporários por padrão, nem
+trate esse exemplo opcional como autorização para substituir uma configuração existente.
 
 ## Governança
 

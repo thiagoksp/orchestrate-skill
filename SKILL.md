@@ -18,15 +18,20 @@ not patch length or a fixed percentage of work assigned to each model.
 | Model | Effort | Preferred assignment |
 |---|---|---|
 | `gpt-5.6-luna` | `max` always | Bounded execution, coding, evidence gathering, and focused review; leaf, no delegation. |
-| `gpt-5.6-sol` | `high` | Independent senior review and bounded diagnosis. |
-| `gpt-6-astra` | `medium` | New coordination assignments and implementation across components. |
-| `gpt-6-astra` | `high` | Difficult ambiguity, architecture, or consequential decisions. |
-| `gpt-6-astra` | `xhigh` or `max` | Exceptional unresolved difficulty or explicit user selection. |
+| `gpt-6-astra` | `low` | Diagnosis, synthesis, independent review, or coordination needing more judgment than a bounded Luna task. |
+| `gpt-6-astra` | `medium` | Difficult ambiguity, architecture, consequential risk, or strongly coupled work across components. |
 
-Use only model/effort combinations available through the selected tool. Preserve the
-configured parent; do not silently downgrade Luna, replace a persistent Coder, or change
-app settings. Disclose a supported fallback when necessary. Do not create unrelated
-tasks or repeat unavailable spawns to bypass capacity limits.
+Choose the least expensive adequate route above and explicitly supply both model and
+effort when the tool supports them. Luna always uses max; Sol, Terra and Astra high or
+higher are excluded from automatic selection. A missing route is not permission to
+inherit an expensive parent or invent another fallback: use an available route above,
+retain in-scope work at the root, or report the specific limit. Explicit user choices
+take precedence. Do not repeat unavailable spawns or create unrelated tasks to bypass limits.
+
+Preserve the configured primary and persistent Senior/Coder threads, history, context
+windows and compaction settings. Temporary specialists get bounded packets, not the
+whole project history. Routing does not authorize replacing a Coder, resetting a chat,
+changing app settings or reducing its available context.
 
 ## Load the relevant guidance
 
@@ -42,7 +47,7 @@ tasks or repeat unavailable spawns to bypass capacity limits.
 
 Name the outcome and acceptance evidence before delegating. Concurrency limits how many
 units run at once, not the total useful work: maintain a queue and reassess it as results
-arrive. There is no mandatory trio or headcount target. The root may authorize Astra/Sol
+arrive. There is no mandatory trio or headcount target. The root may authorize Astra
 coordination within the existing scope; Luna remains a leaf.
 
 Prompt-based scope plus Senior review is the default unless an explicit applicable rule

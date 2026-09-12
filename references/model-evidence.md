@@ -28,10 +28,24 @@ to cost across models. The Astra cost metadata uses expected launch pricing, so 
 treat its dollar values as current Codex credit charges. Keep this v1.1 snapshot separate
 from the **Extended DeepSWE** evaluation listed in the Astra launch article.
 
-Operating interpretation: Luna max supports bounded execution at a low price tier;
-Astra medium is a useful starting point, while high or exceptional xhigh/max should be
-justified by task difficulty. These are routing hypotheses, not guarantees of success.
-Do not infer a fixed percentage of agents or work for each model from benchmark scores.
+This is historical evidence, not a current routing instruction. The policy approved on
+2026-09-12 defaults temporary specialists to Luna Max and permits Astra Low/Medium by
+difficulty; Sol, Terra and higher Astra efforts are not automatic routes. No Astra Low
+row was captured here, so this table cannot prove its cost or accuracy against Sol High.
+Do not infer task-success probabilities or a fixed allocation of agents from these scores.
+
+## Cost and configuration boundaries — 2026-09-12
+
+The [official credit rates](https://learn.chatgpt.com/docs/pricing) price Astra above Sol
+per token. Lower effort may reduce total tokens or rework, but does not guarantee a lower
+cost per task. Evaluate actual outcomes; do not treat compressed shell bytes as billed credits.
+
+The [subagent configuration](https://learn.chatgpt.com/docs/agent-configuration/subagents)
+supports agents.default_subagent_model and agents.default_subagent_reasoning_effort.
+Explicit spawn settings override these defaults; custom agent files can also override
+the resolved settings. Defaults for new specialists do not retarget existing Senior/Coder
+threads. Keep their selected models, context windows and compaction settings unless the
+user explicitly changes them; context reduction was excluded from this policy update.
 
 ## GPT-6 guidance relevant to orchestration
 
